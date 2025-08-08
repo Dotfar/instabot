@@ -9,11 +9,9 @@ from telegram.ext import (
     CallbackQueryHandler,
 )
 
-# دریافت توکن و آیدی کانال از متغیرهای محیطی
 TOKEN = os.getenv("TOKEN")
 CHANNEL = os.getenv("CHANNEL")
 
-# راه‌اندازی سرور Flask برای فعال نگه داشتن ربات
 app = Flask(__name__)
 
 @app.route('/')
@@ -27,7 +25,6 @@ def keep_alive():
     t = Thread(target=run)
     t.start()
 
-# بررسی عضویت کاربر در کانال
 async def is_subscribed(bot, user_id):
     try:
         member = await bot.get_chat_member(chat_id=CHANNEL, user_id=user_id)
@@ -35,7 +32,6 @@ async def is_subscribed(bot, user_id):
     except:
         return False
 
-# فرمان /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     if await is_subscribed(context.bot, user.id):
@@ -50,7 +46,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
 
-# بررسی مجدد عضویت با دکمه "عضو شدم ✅"
 async def check_join(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -60,14 +55,13 @@ async def check_join(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await query.answer("❌ هنوز عضو نشدی!", show_alert=True)
 
-# راه‌اندازی ربات
-async def main():
+# ✅ اجرای همزمان Flask و Bot
+async def start_bot():
     keep_alive()
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(check_join))
     await app.run_polling()
 
-if __name__ == '__main__':
-    import asyncio
-    asyncio.run(main())
+import asyncio
+asyncio.run(start_bot())
