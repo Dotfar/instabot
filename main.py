@@ -1,8 +1,19 @@
+#<<<<<<< HEAD
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
+#=======
+#>>>>>>> 6511069 (Fix: downgrade telegram bot to 13.15 for compatibility)
 from flask import Flask
 from threading import Thread
 import os
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import (
+    ApplicationBuilder,
+    CommandHandler,
+    ContextTypes,
+    CallbackQueryHandler,
+)
+
 
 TOKEN = os.getenv("6368579330:AAFfXOvMLYDdKHkSsw9hvQ512klIpQxrBmg") 
 CHANNEL = os.getenv("@Learndotfar")
