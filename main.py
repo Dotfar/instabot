@@ -1,10 +1,10 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 from flask import Flask
 from threading import Thread
 import os
 
-TOKEN = os.getenv("6368579330:AAFfXOvMLYDdKHkSsw9hvQ512klIpQxrBmg") or "توکن رو اینجا بذار"
+TOKEN = os.getenv("6368579330:AAFfXOvMLYDdKHkSsw9hvQ512klIpQxrBmg") 
 CHANNEL = os.getenv("@Learndotfar")
 
 app = Flask(__name__)
