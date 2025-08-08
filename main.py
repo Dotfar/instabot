@@ -6,7 +6,8 @@ import os
 import asyncio
 
 # دریافت توکن از Railway
-TOKEN = os.getenv("TOKEN")
+TOKEN='6368579330:AAFfXOvMLYDdKHkSsw9hvQ512klIpQxrBmg'
+
 
 # سرور ساده برای Railway
 app = Flask(__name__)
