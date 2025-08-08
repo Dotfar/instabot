@@ -1,17 +1,13 @@
-import os
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 from flask import Flask
 from threading import Thread
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import (
-    ApplicationBuilder, CommandHandler, CallbackQueryHandler,
-    ContextTypes
-)
+import os
 
-# از این به بعد فقط توکن رو مستقیم نذار، بذار تو محیط Railway ست شه
-TOKEN = os.getenv("6368579330:AAFfXOvMLYDdKHkSsw9hvQ512klIpQxrBmg")  # تو Railway باید متغیر محیطی بذاری با اسم BOT_TOKEN
-CHANNEL = os.getenv("Learndotfar") 
+TOKEN = os.getenv("6368579330:AAFfXOvMLYDdKHkSsw9hvQ512klIpQxrBmg") or "توکن رو اینجا بذار"
+CHANNEL = os.getenv("@Learndotfar")
 
-app = Flask('')
+app = Flask(__name__)
 
 @app.route('/')
 def home():
@@ -24,7 +20,7 @@ def keep_alive():
     t = Thread(target=run)
     t.start()
 
-async def is_subscribed(bot, user_id: int) -> bool:
+async def is_subscribed(bot, user_id):
     try:
         member = await bot.get_chat_member(chat_id=CHANNEL, user_id=user_id)
         return member.status in ['member', 'administrator', 'creator']
@@ -37,7 +33,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("✅ عضو هستی! خوش اومدی.")
     else:
         keyboard = [
-            [InlineKeyboardButton("📢 عضویت در کانال", url=f"https://t.me/{CHANNEL}")],
+            [InlineKeyboardButton("📢 عضویت در کانال", url=f"https://t.me/{CHANNEL[1:]}")],
             [InlineKeyboardButton("عضو شدم ✅", callback_data='check')]
         ]
         await update.message.reply_text(
@@ -54,15 +50,13 @@ async def check_join(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await query.answer("❌ هنوز عضو نشدی!", show_alert=True)
 
-def main():
+async def main():
     keep_alive()
-    app_builder = ApplicationBuilder().token(TOKEN)
-    app = app_builder.build()
-
+    app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(check_join))
-
-    app.run_polling()
+    await app.run_polling()
 
 if __name__ == '__main__':
-    main()
+    import asyncio
+    asyncio.run(main())
