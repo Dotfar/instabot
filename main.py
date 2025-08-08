@@ -8,8 +8,8 @@ from telegram.ext import (
 )
 
 # از این به بعد فقط توکن رو مستقیم نذار، بذار تو محیط Railway ست شه
-TOKEN = os.getenv("BOT_TOKEN")  # تو Railway باید متغیر محیطی بذاری با اسم BOT_TOKEN
-CHANNEL = os.getenv("CHANNEL_USERNAME")  # مثلاً: @yourchannel یا بدون @
+TOKEN = os.getenv("6368579330:AAFfXOvMLYDdKHkSsw9hvQ512klIpQxrBmg")  # تو Railway باید متغیر محیطی بذاری با اسم BOT_TOKEN
+CHANNEL = os.getenv("Learndotfar") 
 
 app = Flask('')
 
